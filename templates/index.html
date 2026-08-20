@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Welcome</div>
+    <h1>Books, <em>care</em>, and things worth keeping.</h1>
+    <p>I write, teach, and build things I hope help you — from understanding AI, to healing gently, to keeping your smile evergreen. Everything here is something you can order today.</p>
+    <div class="hero-cta">
+      <a class="btn btn-solid" href="#shop">Browse the shop</a>
+      <a class="btn btn-ghost" href="#about">About me</a>
+    </div>
+  </div>
+</header>
+
+<section id="shop">
+  <div class="wrap">
+
+    {% if featured %}
+    <a class="featured" href="{{ url_for('product_detail', product_id=featured.id) }}">
+      <div class="book-cover">{{ featured.cover_label or featured.name }}</div>
+      <div>
+        <div class="featured-tag">Featured</div>
+        <h3>{{ featured.name }}</h3>
+        <p>{{ featured.description }}</p>
+        <span class="order-link">₦{{ "{:,}".format(featured.price_naira) }} · Buy now →</span>
+      </div>
+    </a>
+    {% endif %}
+
+    <div class="section-head" style="margin-top:56px;">
+      <div class="kicker">All Products</div>
+      <h2>Pick what you need.</h2>
+    </div>
+
+    <div class="grid">
+      {% for p in products %}
+      <div class="product">
+        <span class="badge {{ p.category }}">{{ p.category|capitalize }}</span>
+        <h4>{{ p.name }}</h4>
+        <p>{{ p.description }}</p>
+        <span class="price">₦{{ "{:,}".format(p.price_naira) }}</span>
+        <a class="order-link" href="{{ url_for('product_detail', product_id=p.id) }}">View &amp; buy →</a>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap about-inner">
+    <div class="kicker">About</div>
+    <h2 style="margin-bottom:18px;">One person, a few callings.</h2>
+    <p>I'm Priscillia — Alexa. Dental Therapist, Computer Science graduate, and the person behind Tech with Alexa, SmileCare by Alexis, and Whispers &amp; Wildflowers. Everything I make comes from the same place: wanting to hand someone something useful.</p>
+    <div class="about-links">
+      <a href="https://facebook.com/TechWithAlexa" target="_blank" rel="noopener">Tech with Alexa</a>
+      <a href="mailto:alexisinyamah@gmail.com">SmileCare by Alexis</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

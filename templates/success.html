@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Order status — Alexa Inyamah{% endblock %}
+{% block content %}
+
+<section style="padding-top:90px; min-height:60vh;">
+  <div class="wrap" style="max-width:520px; text-align:center;">
+
+    {% if order.status == "paid" %}
+      <div class="status-icon success">✓</div>
+      <h1>You're in — thank you!</h1>
+      <p style="margin-top:14px; color:var(--plum-70);">Your order for <b>{{ order.product.name }}</b> is confirmed.</p>
+
+      <div class="delivery-box">
+        {% if order.product.delivery_type == "link" %}
+          <p class="mono" style="font-size:.8rem; margin-bottom:10px;">YOUR DOWNLOAD</p>
+          <a class="btn btn-solid" href="{{ order.product.delivery_value }}" target="_blank" rel="noopener">Access {{ order.product.name }} →</a>
+        {% else %}
+          <p>{{ order.product.delivery_value }}</p>
+        {% endif %}
+      </div>
+      <p class="fineprint" style="margin-top:20px;">A copy of this has also been sent to {{ order.buyer_email }}.</p>
+
+    {% elif order.status == "pending" %}
+      <div class="status-icon pending">…</div>
+      <h1>Still confirming your payment</h1>
+      <p style="margin-top:14px; color:var(--plum-70);">This can take a few seconds. Refresh this page in a moment, or check your email — we'll send confirmation there too.</p>
+    {% else %}
+      <div class="status-icon fail">!</div>
+      <h1>Payment didn't go through</h1>
+      <p style="margin-top:14px; color:var(--plum-70);">No charge was made. You can try again from the product page.</p>
+      <a class="btn btn-ghost" style="margin-top:20px;" href="{{ url_for('product_detail', product_id=order.product_id) }}">Try again</a>
+    {% endif %}
+
+    <a class="mono" style="display:block; margin-top:40px; font-size:.8rem; opacity:.6;" href="{{ url_for('home') }}">← Back to shop</a>
+  </div>
+</section>
+
+{% endblock %}

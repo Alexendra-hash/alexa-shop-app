@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Products</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body style="padding:40px 20px; max-width:720px; margin:0 auto;">
+  <h1 style="font-family:'IBM Plex Mono',monospace; font-size:1.3rem; margin-bottom:24px;">Manage Products</h1>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}{% for m in messages %}<div class="flash" style="margin-bottom:16px;">{{ m }}</div>{% endfor %}{% endif %}
+  {% endwith %}
+
+  <form method="POST" class="admin-form">
+    <label>Product name<input type="text" name="name" required></label>
+    <label>Category
+      <select name="category">
+        <option value="book">Book</option>
+        <option value="dental">SmileCare / Dental</option>
+        <option value="other">Other</option>
+      </select>
+    </label>
+    <label>Description<textarea name="description" rows="3" required></textarea></label>
+    <label>Price (₦)<input type="number" name="price_naira" required></label>
+    <label>Cover label (short text shown on cover block)<input type="text" name="cover_label" placeholder="e.g. AI UNLOCKED"></label>
+    <label>Delivery type
+      <select name="delivery_type">
+        <option value="link">Link (download/URL)</option>
+        <option value="message">Message (e.g. pickup instructions)</option>
+      </select>
+    </label>
+    <label>Delivery value (URL or message shown after payment)<input type="text" name="delivery_value"></label>
+    <label>Selar checkout link (from your Selar dashboard, per product)<input type="text" name="selar_url" placeholder="https://selar.com/..."></label>
+    <label class="checkbox-label"><input type="checkbox" name="featured"> Feature this product on homepage</label>
+    <button type="submit" class="btn btn-solid" style="margin-top:14px;">Add product</button>
+  </form>
+
+  <h2 style="font-family:'IBM Plex Mono',monospace; font-size:1rem; margin:36px 0 14px;">Current Products</h2>
+  <div class="admin-list">
+    {% for p in products %}
+    <div class="admin-row">
+      <div>
+        <b>{{ p.name }}</b> — ₦{{ "{:,}".format(p.price_naira) }} <span class="mono" style="opacity:.5;">({{ p.category }}{% if p.featured %}, featured{% endif %})</span>
+      </div>
+      <form method="POST" action="{{ url_for('admin_delete_product', product_id=p.id) }}" onsubmit="return confirm('Delete this product?');">
+        <button type="submit" class="link-btn">Delete</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>
