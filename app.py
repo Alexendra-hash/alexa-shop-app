@@ -11,51 +11,52 @@ def create_app():
 
     db.init_app(app)
 
-    def _auto_seed_if_empty():
-        if Product.query.count() > 0:
-            return
-        starter_products = [
-            dict(
-                name="AI Unlocked: The Complete Guide to Understanding, Using, and Thriving with Artificial Intelligence",
-                category="book",
-                description="A full, plain-language guide to AI — for anyone who wants to actually understand and use it, not just hear about it.",
+    def _sync_products():
+        """Keeps the live product catalog in sync with this list every time the app starts.
+        Edit prices/products here, redeploy, and the storefront updates automatically —
+        including removing anything no longer in this list."""
+        catalog = {
+            "Letters to the Soft Woman": dict(
+                category="other",
+                description="Gentle letters for women in the middle of becoming — for the quiet, tender seasons.",
                 price_naira=5000,
-                cover_label="AI UNLOCKED",
+                cover_label="LETTERS TO THE SOFT WOMAN",
                 delivery_type="link",
                 delivery_value="https://selar.com/ogj5169578",
                 selar_url="https://selar.com/ogj5169578",
                 featured=True,
             ),
-            dict(
-                name="Letters to the Soft Woman",
-                category="other",
-                description="Gentle letters for women in the middle of becoming — for the quiet, tender seasons.",
-                price_naira=3000,
-                cover_label="LETTERS TO THE SOFT WOMAN",
-                delivery_type="link",
-                delivery_value="https://selar.com/ogj5169578",
-                selar_url="https://selar.com/ogj5169578",
-                featured=False,
-            ),
-            dict(
-                name="The Quiet Power of Letting Go",
+            "The Quiet Power of Letting Go": dict(
                 category="other",
                 description="A soft companion for releasing what no longer fits — written for the healing woman.",
-                price_naira=3000,
+                price_naira=10000,
                 cover_label="THE QUIET POWER OF LETTING GO",
                 delivery_type="link",
                 delivery_value="https://selar.com/ogj5169578",
                 selar_url="https://selar.com/ogj5169578",
                 featured=False,
             ),
-        ]
-        for data in starter_products:
-            db.session.add(Product(**data))
+        }
+
+        # remove anything not in the current catalog (e.g. unpublished books)
+        for p in Product.query.all():
+            if p.name not in catalog:
+                db.session.delete(p)
+
+        # add new products, update existing ones (so price/description edits take effect)
+        for name, data in catalog.items():
+            existing = Product.query.filter_by(name=name).first()
+            if existing:
+                for key, value in data.items():
+                    setattr(existing, key, value)
+            else:
+                db.session.add(Product(name=name, **data))
+
         db.session.commit()
 
     with app.app_context():
         db.create_all()
-        _auto_seed_if_empty()
+        _sync_products()
 
     # ---------- storefront ----------
     @app.route("/")
