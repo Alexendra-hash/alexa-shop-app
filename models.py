@@ -29,6 +29,14 @@ class Product(db.Model):
         return self.price_naira * 100
 
 
+class Subscriber(db.Model):
+    __tablename__ = "subscribers"
+
+    id = db.Column(db.String(12), primary_key=True, default=gen_id)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
 class Order(db.Model):
     __tablename__ = "orders"
 

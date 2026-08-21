@@ -54,6 +54,7 @@ section{ padding:64px 0; }
 .badge.book{ background:rgba(184,147,62,.15); color:#8a6a1f; }
 .badge.dental{ background:rgba(31,111,92,.14); color:var(--teal); }
 .badge.other{ background:rgba(181,121,140,.16); color:var(--rose); }
+.badge.kids{ background:rgba(70,130,180,.16); color:#2e6b8f; }
 .product h4{ font-size:1.08rem; font-weight:600; font-family:'Fraunces',serif; }
 .product p{ font-size:.86rem; color:var(--plum-70); flex-grow:1; }
 .product .price{ font-family:'IBM Plex Mono',monospace; font-size:.9rem; font-weight:500; }
@@ -67,6 +68,12 @@ section{ padding:64px 0; }
 .about-links a{ text-decoration:none; border-bottom:1px solid var(--hair); padding-bottom:2px; }
 
 footer{ text-align:center; padding:34px 24px; font-family:'IBM Plex Mono',monospace; font-size:.74rem; color:var(--plum-45); }
+.footer-note{ margin-top:6px; font-size:.7rem; opacity:.8; }
+
+#newsletter{ padding:60px 0; }
+.newsletter-form{ display:flex; gap:10px; margin-top:22px; flex-wrap:wrap; justify-content:center; }
+.newsletter-form input{ font-family:'IBM Plex Sans',sans-serif; font-size:.92rem; padding:12px 16px; border-radius:100px; border:1px solid var(--hair); flex:1; min-width:200px; }
+.newsletter-form input:focus{ outline:2px solid var(--rose); }
 
 /* product detail */
 .product-detail{ display:grid; grid-template-columns:auto 1fr; gap:44px; margin-top:30px; align-items:start; }

@@ -1,7 +1,7 @@
 import os
 import uuid
 from flask import Flask, render_template, request, redirect, url_for, flash
-from models import db, Product, Order
+from models import db, Product, Order, Subscriber
 
 def create_app():
     app = Flask(__name__)
@@ -24,7 +24,7 @@ def create_app():
                 delivery_type="link",
                 delivery_value="https://selar.com/ogj5169578",
                 selar_url="https://selar.com/ogj5169578",
-                featured=True,
+                featured=False,
             ),
             "The Quiet Power of Letting Go": dict(
                 category="other",
@@ -32,8 +32,28 @@ def create_app():
                 price_naira=10000,
                 cover_label="THE QUIET POWER OF LETTING GO",
                 delivery_type="link",
-                delivery_value="https://selar.com/ogj5169578",
-                selar_url="https://selar.com/ogj5169578",
+                delivery_value="https://selar.com/u7vi587959",
+                selar_url="https://selar.com/u7vi587959",
+                featured=False,
+            ),
+            "Wink Makes a Friend — A Bubblewink Meadow Storybook": dict(
+                category="kids",
+                description="An illustrated storybook (PDF) about Wink, a gentle little creature learning what it means to make a friend.",
+                price_naira=2000,
+                cover_label="WINK MAKES A FRIEND",
+                delivery_type="link",
+                delivery_value="https://selar.com/923p247857",
+                selar_url="https://selar.com/923p247857",
+                featured=True,
+            ),
+            "Wink & Pip's Pebble Hunt Activity Pack": dict(
+                category="kids",
+                description="A printable activity pack (PDF) — pebble hunts, puzzles, and coloring pages from Bubblewink Meadow.",
+                price_naira=2000,
+                cover_label="WINK & PIP'S PEBBLE HUNT",
+                delivery_type="link",
+                delivery_value="https://selar.com/648pl59639",
+                selar_url="https://selar.com/648pl59639",
                 featured=False,
             ),
         }
@@ -69,6 +89,27 @@ def create_app():
     def product_detail(product_id):
         product = Product.query.get_or_404(product_id)
         return render_template("product.html", product=product)
+
+    # ---------- newsletter ----------
+    @app.route("/subscribe", methods=["POST"])
+    def subscribe():
+        email = request.form.get("email", "").strip().lower()
+        if not email or "@" not in email:
+            flash("Please enter a valid email.")
+            return redirect(url_for("home") + "#newsletter")
+
+        existing = Subscriber.query.filter_by(email=email).first()
+        if not existing:
+            db.session.add(Subscriber(email=email))
+            db.session.commit()
+
+        flash("You're subscribed — thank you!")
+        return redirect(url_for("home") + "#newsletter")
+
+    @app.route("/admin/subscribers")
+    def admin_subscribers():
+        subs = Subscriber.query.order_by(Subscriber.created_at.desc()).all()
+        return render_template("admin_subscribers.html", subscribers=subs)
 
     # ---------- simple admin: add products ----------
     @app.route("/admin/products", methods=["GET", "POST"])

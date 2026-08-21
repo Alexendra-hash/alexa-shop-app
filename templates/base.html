@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{% block title %}Whispers & Wildflowers — Shop{% endblock %}</title>
+<title>{% block title %}Alexa's Shelf{% endblock %}</title>
+<meta name="description" content="Books, letters, and stories by Priscillia Inyamah — order directly, delivered instantly.">
+
+<meta property="og:title" content="{% block og_title %}Alexa's Shelf{% endblock %}">
+<meta property="og:description" content="{% block og_description %}Books, letters, and stories by Priscillia Inyamah — order directly, delivered instantly.{% endblock %}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ request.url }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{% block twitter_title %}Alexa's Shelf{% endblock %}">
+<meta name="twitter:description" content="{% block twitter_description %}Books, letters, and stories by Priscillia Inyamah.{% endblock %}">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%234A2E35'/%3E%3Ctext x='50' y='68' font-size='55' font-family='Georgia,serif' fill='%23B8933E' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -13,7 +25,7 @@
 
 <nav>
   <div class="nav-inner">
-    <a class="nav-mark" href="{{ url_for('home') }}">Whispers &amp; <em>Wildflowers</em></a>
+    <a class="nav-mark" href="{{ url_for('home') }}">Alexa's <em>Shelf</em></a>
     <ul class="nav-links">
       <li><a href="{{ url_for('home') }}#shop">Shop</a></li>
       <li><a href="{{ url_for('home') }}#about">About</a></li>
@@ -33,7 +45,12 @@
 
 {% block content %}{% endblock %}
 
-<footer>© 2026 Whispers &amp; Wildflowers by Priscillia Inyamah</footer>
+{% block extra_content %}{% endblock %}
+
+<footer>
+  <div>© 2026 Alexa's Shelf · Priscillia Inyamah</div>
+  <div class="footer-note">All products are digital and delivered instantly — no refunds after download.</div>
+</footer>
 
 </body>
 </html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Subscribers</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body style="padding:40px 20px; max-width:640px; margin:0 auto;">
+  <h1 style="font-family:'IBM Plex Mono',monospace; font-size:1.3rem; margin-bottom:6px;">Newsletter Subscribers</h1>
+  <p class="mono" style="font-size:.82rem; opacity:.6; margin-bottom:24px;">{{ subscribers|length }} total</p>
+
+  <div class="admin-list">
+    {% for s in subscribers %}
+    <div class="admin-row">
+      <span>{{ s.email }}</span>
+      <span class="mono" style="opacity:.5; font-size:.76rem;">{{ s.created_at.strftime('%b %d, %Y') }}</span>
+    </div>
+    {% else %}
+    <p style="opacity:.6;">No subscribers yet.</p>
+    {% endfor %}
+  </div>
+</body>
+</html>
